@@ -8,6 +8,8 @@ define("SRC_PATH", (dirname(__DIR__)) . DIRECTORY_SEPARATOR . "src" . DIRECTORY_
 $composer = json_decode(file_get_contents(ROOT_PATH . "composer.json"), true);
 $composer['autoload']['psr-4']["App\\"] = "App" . DIRECTORY_SEPARATOR;
 $composer['require']["noahbuscher/macaw"] = "dev-master";
+$composer['require']["twig/twig"] = "^2.0";
+$composer['require']["symfony/cache"] = "*";
 
 file_put_contents(ROOT_PATH . "composer.json", json_encode($composer));
 
@@ -22,6 +24,7 @@ $dirs = [
         "Data",
         "Traits"
     ],
+    "Cache"=>[],
     "public" => [
         "images",
         "js",
