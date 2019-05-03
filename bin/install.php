@@ -1,14 +1,15 @@
 <?php
-define("APP_PATH", dirname(dirname(dirname(dirname(__DIR__)))) . DIRECTORY_SEPARATOR);
-
+define("ROOT_PATH", dirname(dirname(dirname(dirname(__DIR__)))) . DIRECTORY_SEPARATOR);
+define("APP_PATH", dirname(dirname(dirname(dirname(__DIR__)))) . DIRECTORY_SEPARATOR . "App" . DIRECTORY_SEPARATOR);
+define("SRC_PATH", (dirname(__DIR__)) . DIRECTORY_SEPARATOR . "src" . DIRECTORY_SEPARATOR);
 
 //Update composer.json
 
-$composer = json_decode(file_get_contents(APP_PATH . "composer.json"), true);
+$composer = json_decode(file_get_contents(ROOT_PATH . "composer.json"), true);
 $composer['autoload']['psr-4']["App\\"] = "App" . DIRECTORY_SEPARATOR;
 $composer['require']["noahbuscher/macaw"] = "dev-master";
 
-file_put_contents(APP_PATH . "composer.json", json_encode($composer));
+file_put_contents(ROOT_PATH . "composer.json", json_encode($composer));
 
 
 //Create dirs structures
@@ -18,6 +19,7 @@ $dirs = [
         "Models",
         "Controllers",
         "Core",
+        "Data",
         "Traits"
     ],
     "public" => [
@@ -28,19 +30,21 @@ $dirs = [
 ];
 
 foreach ($dirs as $dir => $subdirs) {
-    $dir = APP_PATH . $dir . DIRECTORY_SEPARATOR;
+    $dir = ROOT_PATH . $dir . DIRECTORY_SEPARATOR;
     if (!file_exists($dir)) {
         mkdir($dir, 0777, true);
     }
     foreach ($subdirs as $subdir) {
-        mkdir($dir . $subdir, 0777, true);
+        if (!file_exists($dir . $subdir)) {
+            mkdir($dir . $subdir, 0777, true);
+        }
     }
 }
 
 
 //Create .htaccess
 
-file_put_contents(APP_PATH . "public" . DIRECTORY_SEPARATOR . ".htaccess", <<<HTACCESS
+file_put_contents(ROOT_PATH . "public" . DIRECTORY_SEPARATOR . ".htaccess", <<<HTACCESS
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /
@@ -64,4 +68,17 @@ composer update
 
 UPDATE;
 
+$to_copy = [
+    [SRC_PATH . "Application.php", APP_PATH . "Core" . DIRECTORY_SEPARATOR . "Application.php"],
+    [SRC_PATH . "Config.php", APP_PATH . "Data" . DIRECTORY_SEPARATOR . "Config.php"],
+    [SRC_PATH . "ConfigLocal.php", APP_PATH . "Data" . DIRECTORY_SEPARATOR . "ConfigLocal.php"],
+    [SRC_PATH . "Router.php", APP_PATH . "Data" . DIRECTORY_SEPARATOR . "Router.php"],
+    [SRC_PATH . "loader.php", ROOT_PATH . "loader.php"],
+    [SRC_PATH . "index.php", ROOT_PATH . "public" . DIRECTORY_SEPARATOR . "index.php"],
+];
 
+foreach ($to_copy as $row) {
+    if (!copy($row[0], $row[1])) {
+        echo "Cannot copy {$row[0]} to {$row[1]}\n";
+    }
+}

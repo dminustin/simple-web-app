@@ -14,7 +14,14 @@ namespace App\Core;
 class Application
 {
     protected static $app;
+    /**
+     * @var App\Data\Config|\App\Data\ConfigLocal
+     */
+    public $config;
 
+    /**
+     * @return Application
+     */
     public static function getApp()
     {
         if (empty(static::$app)) {
@@ -26,6 +33,16 @@ class Application
 
     private function __construct()
     {
-        
+        if (class_exists("Data\\ConfigLocal")) {
+            $this->config = Data\ConfigLocal::Class;
+        } else {
+            $this->config = Data\Config::Class;
+        }
     }
+
+    public function runApp()
+    {
+
+    }
+
 }
