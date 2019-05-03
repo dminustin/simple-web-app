@@ -1,6 +1,6 @@
 <?php
 define("APP_PATH", dirname(dirname(dirname(dirname(__DIR__)))) . DIRECTORY_SEPARATOR);
-
+define("SRC_PATH", (dirname(__DIR__)) . DIRECTORY_SEPARATOR . "src" . DIRECTORY_SEPARATOR);
 
 //Update composer.json
 
@@ -64,4 +64,6 @@ composer update
 
 UPDATE;
 
-
+$to_copy = [
+    [SRC_PATH . "Application.php", APP_PATH . "core" . DIRECTORY_SEPARATOR . "Application.php"]
+];

@@ -3,7 +3,7 @@
 ## Installation
 Install package
 ```bash
-composer require dminustin/simple-web-app
+composer require dminustin/simple-web-app:dev-master
 ```
 
 Run installation script
