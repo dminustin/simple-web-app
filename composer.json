@@ -1,0 +1,13 @@
+{
+  "name": "dminustin/simple-web-app",
+  "description": "Simple Web MVC-Application written on PHP.",
+  "keywords": ["mvc", "routing", "web application", "simple mvc", "mvc framework"],
+  "license": "MIT",
+  "version": "1.0.0",
+  "authors": [
+    {
+      "name": "Danila Minustin",
+      "email": "danila.minustin@gmail.com"
+    }
+  ]
+}
